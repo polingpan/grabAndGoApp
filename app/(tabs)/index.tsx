@@ -1,70 +1,76 @@
-import { Image, StyleSheet, Platform } from 'react-native';
-
-import { HelloWave } from '@/components/HelloWave';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
+import {Image, Text, StyleSheet, Platform, FlatList,} from 'react-native';
+import {SafeAreaView} from "react-native-safe-area-context";
+import ItemCard, {Item} from "@/components/itemCards";
 
 export default function HomeScreen() {
+
+    const data: Item[] = [
+        {
+            id: '1',
+            title: 'Baked goods',
+            store: 'Penelope\'s',
+            price: '$4.99',
+            rating: '5.0',
+            distance: '200m',
+            pickupTime: '17:40 - 18:00',
+        },
+        {
+            id: '2',
+            title: 'Groceries',
+            store: 'Super Marché',
+            price: '$5.99',
+            rating: '4.8',
+            distance: '550m',
+            pickupTime: '10:00 - 14:00',
+        },
+        {
+            id: '3',
+            title: 'Pastries',
+            store: 'Bakery Bliss',
+            price: '$3.99',
+            rating: '4.7',
+            distance: '300m',
+            pickupTime: '12:00 - 16:00',
+        },
+        {
+            id: '4',
+            title: 'Vegetables',
+            store: 'Green Market',
+            price: '$6.99',
+            rating: '4.9',
+            distance: '150m',
+            pickupTime: '08:00 - 10:00',
+        },
+        {
+            id: '5',
+            title: 'Fruits',
+            store: 'Fruit Hub',
+            price: '$4.49',
+            rating: '4.5',
+            distance: '450m',
+            pickupTime: '09:00 - 13:00',
+        },
+    ];
+
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({ ios: 'cmd + d', android: 'cmd + m' })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-        <ThemedText>
-          Tap the Explore tab to learn more about what's included in this starter app.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          When you're ready, run{' '}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+      <SafeAreaView style={styles.container}>
+          <Text style={styles.location}>📍 Current location within 2 km</Text>
+          <Text style={styles.sectionTitle}>Recommended for you</Text>
+          <FlatList
+              data={data}
+              renderItem={({ item }) => <ItemCard item={item} />}
+              keyExtractor={(item) => item.id}
+              horizontal
+          />
+          <Text style={styles.sectionTitle}>Pick up now</Text>
+          {/* Repeat FlatList for "Pick up now" section */}
+      </SafeAreaView>
   );
 }
 
+
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
-  },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
-  },
+    container: { flex: 1, padding: 16 },
+    location: { fontSize: 16, color: '#6e6e6e' },
+    sectionTitle: { fontSize: 18, fontWeight: 'bold', marginVertical: 8 },
 });
